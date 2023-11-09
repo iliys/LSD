@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://b4cn0076gg56t"]
+
+[node name="Table" type="CSGCombiner3D"]
+use_collision = true
+
+[node name="MeshInstance3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.1633e-12, 1, 4.1633e-12)
+size = Vector3(1, 0.1, 1)
+
+[node name="SmallCube" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 0.5, 2.08165e-12)
+size = Vector3(0.25, 1, 0.25)

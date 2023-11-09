@@ -1,0 +1,84 @@
+[gd_scene load_steps=6 format=3 uid="uid://b32hdslnmngrq"]
+
+[ext_resource type="Material" uid="uid://bmbxuqb4mp2vr" path="res://materials/PlasticRed.tres" id="1_4gxvv"]
+[ext_resource type="Script" path="res://scripts/radio.gd" id="1_io555"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_qjpi7"]
+top_radius = 0.008
+bottom_radius = 0.008
+height = 0.2
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_mjnec"]
+radius = 0.45
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_hxrvc"]
+viewport_path = NodePath("SubViewport")
+
+[node name="Radio" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
+script = ExtResource("1_io555")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0722489, 0)
+size = Vector3(0.15, 0.2, 0.3)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0777717, 0.13416, 0)
+operation = 2
+size = Vector3(0.0461881, 0.0231106, 0.239919)
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.237842, 0.0887499)
+mesh = SubResource("CylinderMesh_qjpi7")
+
+[node name="Knob" type="CSGCylinder3D" parent="CSGCombiner3D"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.0731492, 0.0764327, -0.0872321)
+radius = 0.04
+height = 0.025
+material = ExtResource("1_4gxvv")
+
+[node name="KnobArea" type="Area3D" parent="."]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.0731492, 0.0764327, -0.0872321)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="KnobArea"]
+shape = SubResource("SphereShape3D_mjnec")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+size = Vector2i(256, 32)
+
+[node name="Background" type="ColorRect" parent="SubViewport"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="FM" type="Label" parent="SubViewport"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -51.0
+offset_bottom = 26.0
+grow_horizontal = 0
+text = "FM"
+
+[node name="Frequency" type="Label" parent="SubViewport"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -25.5
+offset_right = 25.5
+offset_bottom = 26.0
+grow_horizontal = 2
+text = "100.0"
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.0711672, 0.13212, 0.00158819)
+pixel_size = 0.001
+texture = SubResource("ViewportTexture_hxrvc")
+
+[connection signal="input_event" from="KnobArea" to="." method="_on_knob_area_input_event"]

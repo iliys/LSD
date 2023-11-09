@@ -1,0 +1,82 @@
+[gd_scene load_steps=10 format=3 uid="uid://d1sjpn4rjkgls"]
+
+[ext_resource type="Script" path="res://scripts/cameraman.gd" id="1_c8a37"]
+[ext_resource type="Texture2D" uid="uid://dhf3e1tpxrfm6" path="res://sprites/running_man.png" id="2_r44hc"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7cuyc"]
+height = 1.6
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_khi1r"]
+atlas = ExtResource("2_r44hc")
+region = Rect2(0, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1crfn"]
+atlas = ExtResource("2_r44hc")
+region = Rect2(64, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xlwwl"]
+atlas = ExtResource("2_r44hc")
+region = Rect2(128, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4sxab"]
+atlas = ExtResource("2_r44hc")
+region = Rect2(192, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4tngw"]
+atlas = ExtResource("2_r44hc")
+region = Rect2(256, 0, 64, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jbw1r"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_khi1r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1crfn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xlwwl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4sxab")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4tngw")
+}],
+"loop": true,
+"name": &"new_animation",
+"speed": 5.0
+}]
+
+[node name="Cameraman" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+script = ExtResource("1_c8a37")
+SPEED = 4.0
+JUMP_VELOCITY = 3.5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, -0.2, 2.08165e-12)
+shape = SubResource("CapsuleShape3D_7cuyc")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+light_negative = true
+spot_range = 3.0
+spot_angle = 18.0
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
+pixel_size = 0.016
+texture_filter = 2
+sprite_frames = SubResource("SpriteFrames_jbw1r")
+animation = &"new_animation"
+autoplay = "new_animation"
+frame_progress = 0.763846
+
+[node name="CameraHolder" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="CameraHolder"]
+transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 2.08165e-12, 0.6, -0.1)
+current = true
+fov = 60.0
+size = 0.25

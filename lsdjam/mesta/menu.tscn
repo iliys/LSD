@@ -1,0 +1,122 @@
+[gd_scene load_steps=4 format=3 uid="uid://dicos8rfs2fbj"]
+
+[ext_resource type="Script" path="res://scripts/menu_script.gd" id="1_t32dk"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_apxbb"]
+noise_type = 2
+seed = 3
+frequency = 0.0215
+offset = Vector3(2.08167e-08, 2.08167e-08, 2.08167e-08)
+fractal_type = 3
+fractal_octaves = 10
+fractal_lacunarity = -0.5
+fractal_gain = 1.17
+fractal_ping_pong_strength = -8.89
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4gbqe"]
+width = 1152
+height = 648
+noise = SubResource("FastNoiseLite_apxbb")
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_t32dk")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.27451, 0.513726, 0.654902, 1)
+
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.501961)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("NoiseTexture2D_4gbqe")
+
+[node name="ButtonsContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -196.0
+offset_right = 128.0
+offset_bottom = 188.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="NewDreamButton" type="Button" parent="ButtonsContainer"]
+layout_mode = 2
+mouse_filter = 1
+disabled = true
+text = "New Dream"
+
+[node name="ContinueButton" type="Button" parent="ButtonsContainer"]
+layout_mode = 2
+mouse_filter = 1
+text = "Continue"
+
+[node name="OptionsButton" type="Button" parent="ButtonsContainer"]
+layout_mode = 2
+mouse_filter = 1
+text = "/////////"
+
+[node name="ExitButton" type="Button" parent="ButtonsContainer"]
+layout_mode = 2
+mouse_filter = 1
+text = "Exit"
+
+[node name="OptionsContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 224.0
+offset_top = -68.0
+offset_right = 480.0
+offset_bottom = 59.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FullscreenButton" type="CheckButton" parent="OptionsContainer"]
+layout_mode = 2
+mouse_filter = 1
+text = "Fullscreen"
+
+[node name="VolumeText" type="Label" parent="OptionsContainer"]
+layout_mode = 2
+text = "Volume"
+
+[node name="VolumeSlider" type="HSlider" parent="OptionsContainer"]
+layout_mode = 2
+mouse_filter = 1
+tick_count = 6
+
+[connection signal="dream_started" from="." to="." method="_on_dream_started"]
+[connection signal="pressed" from="ButtonsContainer/NewDreamButton" to="." method="_on_new_dream_button_pressed"]
+[connection signal="pressed" from="ButtonsContainer/ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="ButtonsContainer/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="button_down" from="OptionsContainer/FullscreenButton" to="." method="_on_fullscreen_button_button_down"]
+[connection signal="button_up" from="OptionsContainer/FullscreenButton" to="." method="_on_fullscreen_button_button_up"]
+[connection signal="value_changed" from="OptionsContainer/VolumeSlider" to="." method="_on_volume_slider_value_changed"]

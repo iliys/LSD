@@ -1,0 +1,47 @@
+[gd_scene load_steps=5 format=3 uid="uid://cj2alluumgm6m"]
+
+[ext_resource type="PackedScene" uid="uid://dicos8rfs2fbj" path="res://mesta/menu.tscn" id="1_64edm"]
+[ext_resource type="Script" path="res://scripts/level_holder_script.gd" id="1_837bm"]
+[ext_resource type="AudioStream" uid="uid://bjx3erep8hcei" path="res://sounds/underwater loop.mp3" id="3_6vjfl"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2kiy1"]
+
+[node name="LevelHolder" type="Node3D"]
+process_mode = 3
+script = ExtResource("1_837bm")
+start_scene = "res://mesta/hub_ocean.tscn"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_6vjfl")
+autoplay = true
+
+[node name="LevelName" type="Label" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -97.0
+offset_bottom = 26.0
+grow_horizontal = 0
+text = "Меню"
+
+[node name="Menu" parent="." instance=ExtResource("1_64edm")]
+
+[node name="MouseZone" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Area2D" type="Area2D" parent="MouseZone"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MouseZone/Area2D"]
+shape = SubResource("CircleShape2D_2kiy1")
+
+[connection signal="change_scene" from="." to="." method="_on_change_scene"]
+[connection signal="menu_toggle" from="." to="." method="_on_menu_toggle"]
+[connection signal="start_dream" from="." to="." method="_on_start_dream"]

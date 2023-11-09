@@ -1,0 +1,125 @@
+[gd_scene load_steps=9 format=3 uid="uid://ctv0tntmuivrg"]
+
+[ext_resource type="Material" uid="uid://bmbxuqb4mp2vr" path="res://materials/PlasticRed.tres" id="1_2rg1o"]
+[ext_resource type="PackedScene" uid="uid://d1sjpn4rjkgls" path="res://objects/cameraman.tscn" id="1_ehooc"]
+[ext_resource type="Script" path="res://scripts/following_camera.gd" id="2_m04ii"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rfujr"]
+sky_horizon_color = Color(1, 0.909804, 0.941176, 1)
+sky_curve = 0.27991
+ground_bottom_color = Color(0.698039, 0.690196, 0.666667, 1)
+ground_horizon_color = Color(1, 1, 1, 1)
+
+[sub_resource type="Sky" id="Sky_2xusn"]
+sky_material = SubResource("ProceduralSkyMaterial_rfujr")
+
+[sub_resource type="Environment" id="Environment_qga5p"]
+background_mode = 2
+sky = SubResource("Sky_2xusn")
+fog_density = 0.2258
+adjustment_brightness = 0.4
+adjustment_contrast = 1.88
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_2sy6f"]
+viewport_path = NodePath("CameraCam/SubViewport")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_rcifx"]
+viewport_path = NodePath("MirrorCam/SubViewport")
+
+[node name="Mirror" type="Node3D"]
+process_mode = 1
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_qga5p")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, -4)
+use_collision = true
+size = Vector3(2, 2, 2)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+use_collision = true
+size = Vector3(12, 6, 12)
+material = ExtResource("1_2rg1o")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="CSGBox3D2"]
+operation = 2
+use_collision = true
+size = Vector3(11, 5, 11)
+material = ExtResource("1_2rg1o")
+
+[node name="Cameraman" parent="." instance=ExtResource("1_ehooc")]
+JUMP_VELOCITY = 4.5
+
+[node name="BlockCam" type="CSGCombiner3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 1.5, -3.5)
+use_collision = true
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="BlockCam"]
+use_collision = true
+size = Vector3(0.25, 2, 2)
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="BlockCam/CSGBox3D5"]
+operation = 2
+size = Vector3(0.25, 1.5, 1)
+
+[node name="CameraView" type="Sprite3D" parent="BlockCam/CSGBox3D5/CSGBox3D6"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.05, 0, 0)
+pixel_size = 0.001
+double_sided = false
+texture = SubResource("ViewportTexture_2sy6f")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="BlockCam"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -0.5, 0)
+use_collision = true
+size = Vector3(4, 4, 3)
+
+[node name="CameraCam" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.5, 0.5)
+
+[node name="SubViewport" type="SubViewport" parent="CameraCam"]
+canvas_item_default_texture_filter = 0
+size = Vector2i(1000, 1500)
+
+[node name="FollowingCamera" type="Camera3D" parent="CameraCam/SubViewport"]
+transform = Transform3D(-0.707107, 0.353553, -0.612372, 3.02058e-16, 0.866025, 0.5, 0.707107, 0.353553, -0.612372, -4.5, 4, -5)
+script = ExtResource("2_m04ii")
+
+[node name="BlockCam2" type="CSGCombiner3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.5, 3.5)
+use_collision = true
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="BlockCam2"]
+use_collision = true
+size = Vector3(0.25, 2, 2)
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="BlockCam2/CSGBox3D5"]
+operation = 2
+size = Vector3(0.25, 1.5, 1)
+
+[node name="MirrorView" type="Sprite3D" parent="BlockCam2/CSGBox3D5/CSGBox3D6"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.05, 0, 0)
+pixel_size = 0.001
+double_sided = false
+texture = SubResource("ViewportTexture_rcifx")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="BlockCam2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -0.5, 0)
+use_collision = true
+size = Vector3(4, 4, 3)
+
+[node name="MirrorCam" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.5, 3.5)
+
+[node name="SubViewport" type="SubViewport" parent="MirrorCam"]
+canvas_item_default_texture_filter = 0
+size = Vector2i(1000, 1500)
+
+[node name="Camera3D" type="Camera3D" parent="MirrorCam/SubViewport"]
+transform = Transform3D(-4.37114e-08, -3.47258e-15, -1, -8.74228e-08, 1, 3.48787e-16, -1, -8.74228e-08, 4.37114e-08, -2.5, 1.5, 3.5)
+fov = 120.0
