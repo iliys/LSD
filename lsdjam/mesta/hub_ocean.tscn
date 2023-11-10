@@ -2,11 +2,10 @@
 
 [ext_resource type="Script" path="res://scripts/hub_ocean_script.gd" id="1_3jn7l"]
 [ext_resource type="PackedScene" uid="uid://d1sjpn4rjkgls" path="res://objects/cameraman.tscn" id="1_v1g86"]
-[ext_resource type="Material" uid="uid://dua4ask2ncw0c" path="res://shaders/ocean_water_shader.tres" id="2_bx1py"]
+[ext_resource type="Shader" path="res://shaders/ocean_water_shader.gdshader" id="2_1glbx"]
 [ext_resource type="Environment" uid="uid://chwv2ph84mhmu" path="res://envs/ocean_azure_env.tres" id="3_f3aye"]
 [ext_resource type="PackedScene" uid="uid://b4cn0076gg56t" path="res://objects/table.tscn" id="3_iiexs"]
 [ext_resource type="PackedScene" uid="uid://b32hdslnmngrq" path="res://objects/radio.tscn" id="6_jc4l2"]
-[ext_resource type="PackedScene" uid="uid://dmhmi6j8eroah" path="res://objects/radio)).tscn" id="7_du2qh"]
 
 [sub_resource type="Gradient" id="Gradient_60dtf"]
 offsets = PackedFloat32Array(0.0740741, 0.225926, 0.581481, 1)
@@ -28,11 +27,16 @@ albedo_texture = SubResource("NoiseTexture2D_tq6vd")
 uv1_scale = Vector3(0.1, 0.1, 0.1)
 uv1_triplanar = true
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3rdku"]
+render_priority = 0
+shader = ExtResource("2_1glbx")
+shader_parameter/amplitude = null
+
 [sub_resource type="PlaneMesh" id="PlaneMesh_lj684"]
-material = ExtResource("2_bx1py")
+material = SubResource("ShaderMaterial_3rdku")
 size = Vector2(200, 200)
-subdivide_width = 12
-subdivide_depth = 12
+subdivide_width = 100
+subdivide_depth = 100
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qegqf"]
 transparency = 1
@@ -43,25 +47,27 @@ process_mode = 1
 script = ExtResource("1_3jn7l")
 
 [node name="Sand" type="CSGCylinder3D" parent="."]
-transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, -12, 0)
+transform = Transform3D(-4.37114e-08, -1, 0, 0.965926, -4.2222e-08, 0.258819, -0.258819, 1.13133e-08, 0.965926, 0, -12, 0)
 use_collision = true
-radius = 15.0
+collision_mask = 52
+radius = 15.5
 height = 20.0
-sides = 13
+sides = 12
 material = SubResource("StandardMaterial3D_1jkdo")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Sand"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 2.84124e-07, 0)
+transform = Transform3D(0.965926, 1.48944e-09, -0.258819, 1.48943e-09, 1, 1.13133e-08, 0.258819, -1.13133e-08, 0.965926, -6.5, 2.84124e-07, 0)
 operation = 2
 size = Vector3(25, 21, 44)
 
 [node name="Ocean" type="Node3D" parent="."]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ocean"]
+transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 0, 0, 0)
 mesh = SubResource("PlaneMesh_lj684")
 
 [node name="Cameraman" parent="." instance=ExtResource("1_v1g86")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+transform = Transform3D(-0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, -0.258819, 0, 4, 0)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="Cameraman"]
 light_color = Color(0.376471, 0.541176, 0.505882, 1)
@@ -79,24 +85,21 @@ light_indirect_energy = 2.0
 [node name="MoonLight" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 2.50326e-08, 1, 0, -1, 2.50326e-08, 0, 5, 0)
 light_color = Color(0.196078, 0.0235294, 0.0117647, 1)
-light_energy = 0.1
+light_energy = 0.2
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 0)
 visible = false
 use_collision = true
-size = Vector3(20, 20, 20)
+size = Vector3(20, 20, 25)
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="CSGBox3D"]
 operation = 2
-size = Vector3(19, 20, 16)
+size = Vector3(19, 20, 22)
 material = SubResource("StandardMaterial3D_qegqf")
 
-[node name="Chair" parent="." instance=ExtResource("3_iiexs")]
+[node name="Table" parent="." instance=ExtResource("3_iiexs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 2.93496, 0)
 
 [node name="Radio" parent="." instance=ExtResource("6_jc4l2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 4, 2.08165e-12)
-
-[node name="Radio))" parent="." instance=ExtResource("7_du2qh")]
-transform = Transform3D(-0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, -0.258819, 0, 4, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 4, 2.08165e-12)

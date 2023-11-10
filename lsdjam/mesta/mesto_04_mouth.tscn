@@ -1,0 +1,75 @@
+[gd_scene load_steps=6 format=3 uid="uid://dirk7jg43q3a7"]
+
+[ext_resource type="PackedScene" uid="uid://d1sjpn4rjkgls" path="res://objects/cameraman.tscn" id="1_hxbb6"]
+[ext_resource type="PackedScene" uid="uid://cu6up2gensqg3" path="res://objects/toothman.tscn" id="2_ot0pk"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fs1b8"]
+sky_top_color = Color(0.811765, 0.0196078, 0.407843, 1)
+sky_horizon_color = Color(0.85098, 0.6, 0.180392, 1)
+sky_curve = 0.643064
+ground_bottom_color = Color(0.992157, 0.956863, 0.929412, 1)
+
+[sub_resource type="Sky" id="Sky_nvmlr"]
+sky_material = SubResource("ProceduralSkyMaterial_fs1b8")
+
+[sub_resource type="Environment" id="Environment_dk0os"]
+background_mode = 2
+sky = SubResource("Sky_nvmlr")
+sky_rotation = Vector3(3.48787e-16, 3.48787e-16, 3.48787e-16)
+fog_density = 0.2258
+adjustment_brightness = 0.4
+adjustment_contrast = 1.88
+
+[node name="Mouth" type="Node3D"]
+process_mode = 1
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+light_color = Color(0.478431, 0.278431, 0.278431, 1)
+sky_mode = 1
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_dk0os")
+
+[node name="CameraMan" parent="." instance=ExtResource("1_hxbb6")]
+process_mode = 1
+transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 0)
+use_collision = true
+collision_mask = 52
+size = Vector3(100, 1, 100)
+
+[node name="5FloorBuilding" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7, 29.5)
+use_collision = true
+size = Vector3(68, 16, 37)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="5FloorBuilding"]
+transform = Transform3D(1, 0, 0, 0, 0.5, -0.866025, 0, 0.866025, 0.5, 1.5, 1.83, -14)
+operation = 2
+size = Vector3(8, 53, 12.52)
+
+[node name="12FloorBuilding" type="CSGBox3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -52, 18, -13)
+use_collision = true
+size = Vector3(68, 38, 37)
+
+[node name="ToothMan" parent="." instance=ExtResource("2_ot0pk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, -0.5, 0.5)
+
+[node name="ToothMan3" parent="." instance=ExtResource("2_ot0pk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, -0.5, 2)
+
+[node name="ToothMan2" parent="." instance=ExtResource("2_ot0pk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, -0.5, -1)
+
+[node name="ToothMan4" parent="." instance=ExtResource("2_ot0pk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, -0.5, -2)
+
+[node name="ToothMan5" parent="." instance=ExtResource("2_ot0pk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, -0.5, -0.5)
+
+[node name="ToothMan6" parent="." instance=ExtResource("2_ot0pk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -0.5, 1)

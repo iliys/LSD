@@ -9,4 +9,5 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	$SunLight.rotate_x(day_speed * delta)
+	#$SunLight.rotate_x(day_speed * delta)
+	pass

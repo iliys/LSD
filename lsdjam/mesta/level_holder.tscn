@@ -9,11 +9,12 @@
 [node name="LevelHolder" type="Node3D"]
 process_mode = 3
 script = ExtResource("1_837bm")
-start_scene = "res://mesta/hub_ocean.tscn"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_6vjfl")
 autoplay = true
+
+[node name="Menu" parent="." instance=ExtResource("1_64edm")]
 
 [node name="LevelName" type="Label" parent="."]
 anchors_preset = 1
@@ -22,11 +23,10 @@ anchor_right = 1.0
 offset_left = -97.0
 offset_bottom = 26.0
 grow_horizontal = 0
-text = "Меню"
-
-[node name="Menu" parent="." instance=ExtResource("1_64edm")]
+text = "Menu"
 
 [node name="MouseZone" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5

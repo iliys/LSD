@@ -49,8 +49,12 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Cameraman" type="CharacterBody3D"]
+[node name="CameraMan" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+collision_layer = 32
+collision_mask = 31
+axis_lock_angular_x = true
+axis_lock_angular_y = true
 script = ExtResource("1_c8a37")
 SPEED = 4.0
 JUMP_VELOCITY = 3.5
@@ -74,9 +78,19 @@ autoplay = "new_animation"
 frame_progress = 0.763846
 
 [node name="CameraHolder" type="Node3D" parent="."]
+transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 0, 0, 0)
 
-[node name="Camera3D" type="Camera3D" parent="CameraHolder"]
+[node name="FirstPersonCamera" type="Camera3D" parent="CameraHolder"]
 transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 2.08165e-12, 0.6, -0.1)
 current = true
 fov = 60.0
 size = 0.25
+
+[node name="ThirdPersonCamera" type="Camera3D" parent="CameraHolder"]
+transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 2.08165e-12, 2.08165e-12, 4)
+fov = 60.0
+size = 0.25
+
+[node name="FootPoint" type="Node3D" parent="."]
+transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 0, 0.5, 0)
+top_level = true

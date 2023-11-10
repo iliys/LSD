@@ -5,8 +5,8 @@ extends Node3D
 # это главная нода, из которой будет запускаться игра
 
 
-# выбор сцены для запуска, по умолчанию это МЕНЮ
-@export_file("*.tscn") var start_scene = "res://mesta/mesto_02_mirror.tscn"
+# выбор сцены для запуска, по умолчанию это ОКЕАН
+@export_file("*.tscn") var start_scene = "res://mesta/hub_ocean.tscn"
 
 var current_scene = null
 var current_level_name
@@ -19,14 +19,11 @@ func _ready():
 	pass
 
 func _process(delta):
-	
 	if Input.is_action_just_released("menu") and current_scene != null:
 		emit_signal("menu_toggle")
 
 func _input(event):
 	pass
-	#if Input.mouse_mode == Input.MOUSE_MODE_CONFINED:
-	#	Input.warp_mouse($MouseZone.position)
 
 # функция создания сцены и удаления (если есть) текущей
 func scene_instance(next_scene):
@@ -54,17 +51,18 @@ func _on_start_dream():
 
 
 # переключение менюшки, захват мыши и пауза сцены, если загружена сцена
-# MouseZone нужен, чтобы считывать положение мыши в Captured моде
+# MouseZone пока замена курсора
 func _on_menu_toggle():
 	$Menu.visible = !$Menu.visible
 	if $Menu.visible:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		if current_scene:
 			get_tree().paused = true
+		$MouseZone.visible = false
 	else:
-		#Input.mouse_mode = Input.MOUSE_MODE_CONFINED
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		get_tree().paused = false
+		$MouseZone.visible = true
 	
 	
 	
