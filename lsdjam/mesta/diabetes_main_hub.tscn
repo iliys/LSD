@@ -1,0 +1,309 @@
+[gd_scene load_steps=17 format=3 uid="uid://cc6hgkte44h2q"]
+
+[ext_resource type="PackedScene" uid="uid://b4cn0076gg56t" path="res://objects/table.tscn" id="1_uv7e1"]
+[ext_resource type="PackedScene" uid="uid://bc14ei60opjte" path="res://objects/chair.tscn" id="2_2whob"]
+[ext_resource type="Texture2D" uid="uid://dd07k1o2bgvtq" path="res://sprites/chess.png" id="2_w74b5"]
+[ext_resource type="Material" uid="uid://cd7iq0nfq145m" path="res://materials/Glass.tres" id="3_l6r3l"]
+[ext_resource type="PackedScene" uid="uid://dol8vmjli1i67" path="res://objects/sweet.tscn" id="4_c0r3h"]
+[ext_resource type="Script" path="res://scripts/hand_operator.gd" id="5_05eww"]
+[ext_resource type="Script" path="res://scripts/CameraPath.gd" id="5_cg73e"]
+[ext_resource type="Texture2D" uid="uid://boes74q5v618x" path="res://sprites/hand.png" id="6_ppldl"]
+
+[sub_resource type="Environment" id="Environment_thix8"]
+background_mode = 1
+ambient_light_source = 2
+ambient_light_color = Color(0.972549, 0.607843, 0.611765, 1)
+ambient_light_energy = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l4l2"]
+albedo_texture = ExtResource("2_w74b5")
+uv1_triplanar = true
+
+[sub_resource type="Curve3D" id="Curve3D_sgd1t"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, -1, 1, 0, -0.5, 0.5, 0, 0, -0.5, 0, 0, 0.5, 0.5, -1),
+"tilts": PackedFloat32Array(2, 0, 0)
+}
+point_count = 3
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c0kx5"]
+atlas = ExtResource("6_ppldl")
+region = Rect2(0, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qwebc"]
+atlas = ExtResource("6_ppldl")
+region = Rect2(64, 0, 64, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gn3c8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c0kx5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qwebc")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mpq7k"]
+radius = 0.09
+height = 0.5
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_d1ku1"]
+radius = 0.1
+
+[node name="Diabetes" type="Node3D"]
+process_mode = 1
+
+[node name="Table" parent="." instance=ExtResource("1_uv7e1")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_thix8")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+
+[node name="Outside" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+size = Vector3(8, 5, 8)
+
+[node name="Walls" type="CSGBox3D" parent="Outside"]
+operation = 2
+size = Vector3(6, 2, 6)
+
+[node name="Floor" type="CSGBox3D" parent="Outside"]
+operation = 2
+size = Vector3(5, 3, 5)
+material = SubResource("StandardMaterial3D_7l4l2")
+
+[node name="Chair" parent="." instance=ExtResource("2_2whob")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+
+[node name="Jar" type="CSGSphere3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1.3, 2.08165e-12)
+use_collision = true
+collision_layer = 2
+collision_mask = 4
+radius = 0.25
+radial_segments = 13
+rings = 8
+material = ExtResource("3_l6r3l")
+
+[node name="CSGSphere3D2" type="CSGSphere3D" parent="Jar"]
+operation = 2
+radius = 0.24
+radial_segments = 13
+rings = 12
+material = ExtResource("3_l6r3l")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Jar"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 0.22, 2.08165e-12)
+operation = 2
+radius = 0.125
+height = 0.125
+sides = 12
+smooth_faces = false
+
+[node name="Bottom" type="CSGCylinder3D" parent="Jar"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, -0.25, 2.08165e-12)
+radius = 0.15
+height = 0.125
+sides = 12
+smooth_faces = false
+
+[node name="Sweets" type="Node3D" parent="Jar"]
+transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 4.27175e-16, 0.258819, -0.965925, 2.4663e-16, 0.965926, 0.258819, 0, 0, 0)
+
+[node name="Sweet41" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.346936, 2.88841e-07, -0.937889, -0.610354, 0.759272, 0.225777, 0.712112, 0.650775, -0.263419, 1.9611e-12, 0, 0)
+
+[node name="Sweet42" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.346936, 2.88841e-07, -0.937889, -0.610354, 0.759272, 0.225777, 0.712112, 0.650775, -0.263419, 2.88814e-08, 0.0759271, 0.0650775)
+
+[node name="Sweet43" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.346936, 2.88841e-07, -0.937889, -0.610354, 0.759272, 0.225777, 0.712112, 0.650775, -0.263419, -0.0656522, 0.137288, 0.0856847)
+
+[node name="Sweet44" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.346936, 2.88841e-07, -0.937889, -0.610354, 0.759272, 0.225777, 0.712112, 0.650775, -0.263419, 0.0562734, 0.107937, 0.119929)
+
+[node name="Sweet45" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.346936, 2.88841e-07, -0.937889, -0.610354, 0.759272, 0.225777, 0.712112, 0.650775, -0.263419, -0.0277548, 0.0270988, 0.122046)
+
+[node name="Sweet46" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.346936, 2.88841e-07, -0.937889, -0.610354, 0.759272, 0.225777, 0.712112, 0.650775, -0.263419, 0.0312242, 0.130859, 0.000987411)
+
+[node name="Sweet47" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.346936, 2.88841e-07, -0.937889, -0.610354, 0.759272, 0.225777, 0.712112, 0.650775, -0.263419, -0.0465126, 0.0923561, 0.16884)
+
+[node name="Sweet48" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.346936, 2.88841e-07, -0.937889, -0.610354, 0.759272, 0.225777, 0.712112, 0.650775, -0.263419, 0.0923779, 0.149125, 0.102607)
+
+[node name="Sweet" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+
+[node name="Sweet2" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 0.1, 2.08165e-12)
+
+[node name="Sweet5" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 0.16, 0.07)
+
+[node name="Sweet6" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 0.16, -0.06)
+
+[node name="Sweet3" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08, 0.1, 2.08165e-12)
+
+[node name="Sweet4" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09, 0.1, 2.08165e-12)
+
+[node name="Sweet7" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08, 0.18, 0.02)
+
+[node name="Sweet8" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05, 0.18, -0.08)
+
+[node name="Sweet9" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(0.611527, 0.74208, 0.274503, 0.514908, -0.10983, -0.850181, -0.600753, 0.661253, -0.449267, -5.68434e-13, 0, 0)
+
+[node name="Sweet10" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(0.611527, 0.74208, 0.274503, 0.514908, -0.10983, -0.850181, -0.600753, 0.661253, -0.449267, 0.074208, -0.0109829, 0.0661253)
+
+[node name="Sweet11" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(0.611527, 0.74208, 0.274503, 0.514908, -0.10983, -0.850181, -0.600753, 0.661253, -0.449267, 0.137948, -0.0770854, 0.0743518)
+
+[node name="Sweet12" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(0.611527, 0.74208, 0.274503, 0.514908, -0.10983, -0.850181, -0.600753, 0.661253, -0.449267, 0.102263, 0.0334381, 0.132756)
+
+[node name="Sweet13" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(0.611527, 0.74208, 0.274503, 0.514908, -0.10983, -0.850181, -0.600753, 0.661253, -0.449267, 0.12313, 0.0302098, 0.018065)
+
+[node name="Sweet14" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(0.611527, 0.74208, 0.274503, 0.514908, -0.10983, -0.850181, -0.600753, 0.661253, -0.449267, 0.0191705, -0.0573246, 0.120193)
+
+[node name="Sweet15" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(0.611527, 0.74208, 0.274503, 0.514908, -0.10983, -0.850181, -0.600753, 0.661253, -0.449267, 0.187987, 0.00441968, 0.0619799)
+
+[node name="Sweet16" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(0.611527, 0.74208, 0.274503, 0.514908, -0.10983, -0.850181, -0.600753, 0.661253, -0.449267, 0.0810378, 0.0224997, 0.185005)
+
+[node name="Sweet17" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.606618, 0.434713, -0.665612, -0.493531, -0.862306, -0.113387, -0.623252, 0.259718, 0.737634, -5.77813e-09, -0.0151854, -0.0130155)
+
+[node name="Sweet18" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.606618, 0.434713, -0.665612, -0.493531, -0.862306, -0.113387, -0.623252, 0.259718, 0.737634, 0.0434713, -0.101416, 0.0129563)
+
+[node name="Sweet19" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.606618, 0.434713, -0.665612, -0.493531, -0.862306, -0.113387, -0.623252, 0.259718, 0.737634, 0.0229613, -0.161091, 0.0801737)
+
+[node name="Sweet20" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.606618, 0.434713, -0.665612, -0.493531, -0.862306, -0.113387, -0.623252, 0.259718, 0.737634, 0.109491, -0.146351, -0.0157187)
+
+[node name="Sweet21" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.606618, 0.434713, -0.665612, -0.493531, -0.862306, -0.113387, -0.623252, 0.259718, 0.737634, -0.00505808, -0.140898, -0.036904)
+
+[node name="Sweet22" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.917918, 0.14808, 0.368102, 0.375856, 0.027288, 0.926276, 0.127118, 0.988599, -0.0807046, -2.31107e-08, -0.0607418, -0.052062)
+
+[node name="Sweet23" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.917918, 0.14808, 0.368102, 0.375856, 0.027288, 0.926276, 0.127118, 0.988599, -0.0807046, 0.014808, -0.058013, 0.0467979)
+
+[node name="Sweet24" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.917918, 0.14808, 0.368102, 0.375856, 0.027288, 0.926276, 0.127118, 0.988599, -0.0807046, 0.04946, 0.00846368, 0.100465)
+
+[node name="Sweet25" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.917918, 0.14808, 0.368102, 0.375856, 0.027288, 0.926276, 0.127118, 0.988599, -0.0807046, 0.00160671, -0.111952, 0.110956)
+
+[node name="Sweet26" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.917918, 0.14808, 0.368102, 0.375856, 0.027288, 0.926276, 0.127118, 0.988599, -0.0807046, -0.0586254, -0.0279444, 0.0569673)
+
+[node name="Sweet27" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.917918, 0.14808, 0.368102, 0.375856, 0.027288, 0.926276, 0.127118, 0.988599, -0.0807046, 0.0974206, -0.09184, 0.0353573)
+
+[node name="Sweet28" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.917918, 0.14808, 0.368102, 0.375856, 0.027288, 0.926276, 0.127118, 0.988599, -0.0807046, -0.0394169, -0.00723588, 0.134441)
+
+[node name="Sweet30" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(0.528438, -0.552489, 0.6446, 0.552489, 0.800291, 0.233005, -0.6446, 0.233005, 0.728148, -3.17765e-08, -0.0835199, -0.0715852)
+
+[node name="Sweet31" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(0.528438, -0.552489, 0.6446, 0.552489, 0.800291, 0.233005, -0.6446, 0.233005, 0.728148, -0.0552489, -0.00349081, -0.0482847)
+
+[node name="Sweet32" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(0.528438, -0.552489, 0.6446, 0.552489, 0.800291, 0.233005, -0.6446, 0.233005, 0.728148, -0.0432762, 0.060837, 0.016666)
+
+[node name="Sweet33" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(0.528438, -0.552489, 0.6446, 0.552489, 0.800291, 0.233005, -0.6446, 0.233005, 0.728148, -0.127074, 0.0305463, -0.0779933)
+
+[node name="Sweet34" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(0.528438, -0.552489, 0.6446, 0.552489, 0.800291, 0.233005, -0.6446, 0.233005, 0.728148, -0.0129738, 0.0407083, -0.0998527)
+
+[node name="Sweet37" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(0.528438, -0.552489, 0.6446, 0.552489, 0.800291, 0.233005, -0.6446, 0.233005, 0.728148, -0.177438, 0.0142676, -0.0556661)
+
+[node name="Sweet38" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.606618, 0.434713, -0.665612, -0.493531, -0.862306, -0.113387, -0.623252, 0.259718, 0.737634, 0.0980669, -0.0569982, 0.0690489)
+
+[node name="Sweet39" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.606618, 0.434713, -0.665612, -0.493531, -0.862306, -0.113387, -0.623252, 0.259718, 0.737634, 0.0164068, -0.212151, -0.00137383)
+
+[node name="Sweet40" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.606618, 0.434713, -0.665612, -0.493531, -0.862306, -0.113387, -0.623252, 0.259718, 0.737634, 0.161828, -0.136653, 0.00588554)
+
+[node name="Sweet35" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(0.528438, -0.552489, 0.6446, 0.552489, 0.800291, 0.233005, -0.6446, 0.233005, 0.728148, -0.102808, -0.0532148, 0.00972933)
+
+[node name="Sweet36" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(0.528438, -0.552489, 0.6446, 0.552489, 0.800291, 0.233005, -0.6446, 0.233005, 0.728148, -0.0442809, 0.109392, -0.0666493)
+
+[node name="Sweet29" parent="Jar/Sweets" instance=ExtResource("4_c0r3h")]
+transform = Transform3D(-0.917918, 0.14808, 0.368102, 0.375856, 0.027288, 0.926276, 0.127118, 0.988599, -0.0807046, 0.0431022, -0.148725, 0.125986)
+
+[node name="HandOperator" type="Node3D" parent="."]
+script = ExtResource("5_05eww")
+
+[node name="CameraPath" type="Path3D" parent="HandOperator"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 1)
+curve = SubResource("Curve3D_sgd1t")
+script = ExtResource("5_cg73e")
+
+[node name="PathFollow3D" type="PathFollow3D" parent="HandOperator/CameraPath"]
+transform = Transform3D(-0.186107, -0.40665, -0.89443, 0.909297, -0.416147, -6.16946e-08, -0.372213, -0.8133, 0.447215, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="HandOperator/CameraPath/PathFollow3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
+current = true
+
+[node name="Hand" type="RigidBody3D" parent="HandOperator"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.76, 2.08165e-12)
+collision_layer = 32
+collision_mask = 7
+gravity_scale = 2.66454e-15
+lock_rotation = true
+angular_velocity = Vector3(3.63316e-14, 3.63316e-14, 3.63316e-14)
+
+[node name="HandSprite" type="AnimatedSprite3D" parent="HandOperator/Hand"]
+pixel_size = 0.004
+billboard = 2
+texture_filter = 2
+sprite_frames = SubResource("SpriteFrames_gn3c8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HandOperator/Hand"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
+shape = SubResource("CapsuleShape3D_mpq7k")
+
+[node name="PalmZone" type="Area3D" parent="HandOperator/Hand"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, -0.2, 2.08165e-12)
+collision_layer = 8
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HandOperator/Hand/PalmZone"]
+shape = SubResource("SphereShape3D_d1ku1")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, -9.53672e-17, 2.39647e-16, 2.39647e-16, 0.687087, -0.726575, -9.53672e-17, 0.726575, 0.687087, 2.08165e-12, 1.27, 0.1)
+fov = 90.0
+
+[connection signal="body_entered" from="HandOperator/Hand/PalmZone" to="HandOperator" method="_on_palm_zone_sweet_entered"]
+[connection signal="body_exited" from="HandOperator/Hand/PalmZone" to="HandOperator" method="_on_palm_zone_sweet_exited"]

@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://dol8vmjli1i67"]
+
+[ext_resource type="Material" uid="uid://bmbxuqb4mp2vr" path="res://materials/PlasticRed.tres" id="1_38n6j"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3pphb"]
+friction = 0.2
+bounce = 0.5
+
+[sub_resource type="SphereMesh" id="SphereMesh_bp76m"]
+material = ExtResource("1_38n6j")
+radius = 0.03
+height = 0.06
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_me2fk"]
+radius = 0.03
+
+[node name="Sweet" type="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.08165e-12)
+collision_layer = 12
+collision_mask = 47
+mass = 0.01
+physics_material_override = SubResource("PhysicsMaterial_3pphb")
+gravity_scale = 0.5
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_bp76m")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_me2fk")
