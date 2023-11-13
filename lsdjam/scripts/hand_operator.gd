@@ -4,6 +4,9 @@ var hand_moving = Vector2.ZERO
 var hand_speed = 20.0
 var hand_sprite
 
+var hand_on_bottom = false
+var height_correction = [-0.3, -0.15]
+
 var choosen_sweet = null
 var sweets_list = []
 # Called when the node enters the scene tree for the first time.
@@ -45,11 +48,14 @@ func _input(event):
 		else:
 			if choosen_sweet:
 				var new_pos = get_node("Hand").position
-				new_pos.y -= 0.3
+				if not hand_on_bottom:
+					new_pos.y += height_correction[0]
+				else:
+					new_pos.y += height_correction[1]
+					
 				choosen_sweet.position = new_pos
 				add_child(choosen_sweet)
 				choosen_sweet = null
-
 
 func _on_palm_zone_sweet_entered(sweet):
 	sweets_list.append(sweet)
@@ -57,3 +63,11 @@ func _on_palm_zone_sweet_entered(sweet):
 
 func _on_palm_zone_sweet_exited(sweet):
 	sweets_list.erase(sweet)
+
+
+func _on_palm_zone_area_entered(bottom):
+	hand_on_bottom = true
+
+func _on_palm_zone_area_exited(bottom):
+	hand_on_bottom = false
+	

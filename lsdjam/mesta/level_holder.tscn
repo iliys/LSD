@@ -9,7 +9,6 @@
 [node name="LevelHolder" type="Node3D"]
 process_mode = 3
 script = ExtResource("1_837bm")
-start_scene = "res://mesta/diabetes_main_hub.tscn"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_6vjfl")

@@ -34,11 +34,15 @@ func _physics_process(delta):
 	var input_updown = Input.get_axis("ui_up", "ui_down")
 	var input_side = Input.get_axis("ui_left", "ui_right")
 	
-	var mouse_input = Input.get_last_mouse_velocity()
-	var cam_rotation = -mouse_input * delta * 0.005
+	#mouse_input = Input.get_last_mouse_velocity()
+	#var cam_rotation = -mouse_input * delta * 0.005
+	
+	mouse_input = lerp(mouse_input, Vector2.ZERO, 0.5)
+	var cam_rotation = -mouse_input * delta * 0.5
 	
 	$CameraHolder.rotate_y(cam_rotation.x)
-	$CameraHolder.rotation.x =	clamp($CameraHolder.rotation.x + cam_rotation.y, -0.5, 0.15)
+	$CameraHolder.rotation.x =	clamp($CameraHolder.rotation.x + cam_rotation.y, -0.75, 0.5)
+	$AnimatedSprite3D.rotation.x = $CameraHolder.rotation.x
 	$AnimatedSprite3D.rotation.y = $CameraHolder.rotation.y
 	
 	if Input.is_action_just_pressed("camera") and canchangecamera:
@@ -54,6 +58,14 @@ func _physics_process(delta):
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
+
+func _input(event):
+	if event is InputEventMouseMotion:
+		mouse_input = event.relative
+		mouse_input.x = clamp(mouse_input.x, -50, 50)
+		mouse_input.y = clamp(mouse_input.y, -50, 50)
+		
+
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton:

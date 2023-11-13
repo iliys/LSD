@@ -35,8 +35,8 @@ shader_parameter/amplitude = null
 [sub_resource type="PlaneMesh" id="PlaneMesh_lj684"]
 material = SubResource("ShaderMaterial_3rdku")
 size = Vector2(200, 200)
-subdivide_width = 100
-subdivide_depth = 100
+subdivide_width = 50
+subdivide_depth = 50
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qegqf"]
 transparency = 1
